@@ -1,36 +1,29 @@
-
 class Article {
-  String? id;
   String? title;
+  String? description;
+  String? content;
   String? link;
-  DateTime? pubDate;
   String? imageurl;
-  String? category;
-  String? aitag;
+  DateTime? pubDate;
   Article({
-    required this.id,
     required this.title,
-    required this.category,
+    required this.description,
     required this.imageurl,
     required this.link,
     required this.pubDate,
-    required this.aitag,
+    required this.content,
   });
   factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
-      id: json["article_id"] as String?,
-      title: json["title"] as String?,
-      category: (json["category"] != null && json["category"].isNotEmpty)
-          ? json["category"][0] as String?
-          : null,
-      imageurl: json["image_url"] as String?,
-      link: json["link"] as String?,
-      pubDate: json["pubDate"] != null
-          ? DateTime.tryParse(json["pubDate"])
-          : null,
-      aitag: (json["ai_tag"] != null && json["ai_tag"].isNotEmpty)
-          ? json["ai_tag"][0] as String?
-          : null,
-    );
+ 
+      return Article(
+        title: json["title"] as String?,
+        description: json["description"] as String?,
+        imageurl: json["image"] as String?,
+        link:    json["url"] as String?,
+        pubDate: json["publishedAt"] != null
+            ? DateTime.tryParse(json["publishedAt"])
+            : null,
+        content: json["content"] as String?,
+      );
   }
 }
