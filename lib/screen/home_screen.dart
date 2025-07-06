@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -14,10 +13,18 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  var _query = TextEditingController();
+  bool isSearching = false;
   @override
   void initState() {
     super.initState();
     ref.read(articleProvider.notifier).featchArticle();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _query.dispose();
   }
 
   @override
@@ -25,7 +32,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final article = ref.watch(articleProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text("News", style: Theme.of(context).textTheme.titleLarge),
+        title: isSearching
+            ? SizedBox(
+                child: TextField(
+                  controller: _query,
+                  autofocus: true,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Search news...',
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                    filled: true,
+                    fillColor: Colors.black.withValues(alpha: .1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSubmitted: (value) {
+                    if(_query.text.trim().isEmpty) return;
+                      ref.read(articleProvider.notifier).searchArticle(_query.text.trim());
+                      setState(() {
+                        isSearching = false;
+                      });
+
+                    
+                  },
+                ),
+              )
+            : Text("News", style: Theme.of(context).textTheme.titleLarge),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                isSearching = true;
+              });
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: article.length,
@@ -33,6 +77,4 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-
-
 }
