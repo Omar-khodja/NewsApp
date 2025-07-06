@@ -1,29 +1,28 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:news_app/moudel/article.dart';
+import 'package:news_app/provider/article_Notifire.dart';
 import 'package:news_app/widget/article_widget.dart';
 
 final logger = Logger();
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  List<Article> article = [];
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getAtricle();
+    ref.read(articleProvider.notifier).featchArticle();
   }
 
   @override
   Widget build(BuildContext context) {
+    final article = ref.watch(articleProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text("News", style: Theme.of(context).textTheme.titleLarge),
@@ -35,25 +34,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getAtricle() async {
-    final url = Uri.parse(
-      "https://gnews.io/api/v4/search?q=example&apikey=cadd44b8d5598345dde7f972e3574379",
-    );
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final jsondata = jsonDecode(response.body);
-        final List<dynamic> results = jsondata['articles'];
-        setState(() {
-          article = results
-              .map((e) => Article.fromJson(e as Map<String, dynamic>))
-              .toList();
-        });
-      } else {
-        logger.e(response.statusCode);
-      }
-    } catch (e) {
-      logger.e(e);
-    }
-  }
+
 }

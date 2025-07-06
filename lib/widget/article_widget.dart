@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:news_app/moudel/article.dart';
 import 'package:transparent_image/transparent_image.dart';
 
