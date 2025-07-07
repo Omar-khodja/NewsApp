@@ -13,16 +13,16 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  var _query = TextEditingController();
+  final _query = TextEditingController();
   bool isSearching = false;
   @override
   void initState() {
     super.initState();
     ref.read(articleProvider.notifier).featchArticle();
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _query.dispose();
   }
@@ -32,6 +32,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final article = ref.watch(articleProvider);
     return Scaffold(
       appBar: AppBar(
+        leading: isSearching ?  IconButton(onPressed: () {
+          setState(() {
+            isSearching = false;
+          });
+        }, icon: Icon(Icons.arrow_back)):null,
         title: isSearching
             ? SizedBox(
                 child: TextField(
@@ -49,13 +54,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                   onSubmitted: (value) {
-                    if(_query.text.trim().isEmpty) return;
-                      ref.read(articleProvider.notifier).searchArticle(_query.text.trim());
-                      setState(() {
-                        isSearching = false;
-                      });
-
-                    
+                    if (_query.text.trim().isEmpty) return;
+                    ref
+                        .read(articleProvider.notifier)
+                        .searchArticle(_query.text.trim());
+                    setState(() {
+                      isSearching = false;
+                    });
                   },
                 ),
               )

@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
                 color: kColorscheme.onSurface,
               ),
               titleMedium: TextStyle(color: kColorscheme.onSurface),
-              titleSmall: TextStyle(color: kColorscheme.onSurface),
+              titleSmall: TextStyle(color: kColorscheme.onSurface,),
             ),
           ).copyWith(
             appBarTheme: AppBarTheme(
