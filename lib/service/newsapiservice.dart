@@ -6,16 +6,14 @@ import 'package:news_app/moudel/article.dart';
 import 'package:news_app/screen/home_screen.dart';
 
 class Newsapiservice {
-   Newsapiservice({required this.client}):apiKey = dotenv.env['API_KEY']! ;
+  Newsapiservice({required this.client}) : apiKey = dotenv.env['API_KEY']!;
   final http.Client client;
-  final String apiKey ;
-
-
+  final String apiKey;
 
   Future<List<Article>> searchArticles(String query) async {
     final uri = Uri.https("gnews.io", "/api/v4/search", {
       "q": query,
-      "apikey": "",
+      "apikey": apiKey,
       "lang": "en",
       "max": "10",
     });
@@ -29,15 +27,16 @@ class Newsapiservice {
           .map((e) => Article.fromJson(e as Map<String, dynamic>))
           .toList();
     } else {
-        print("Status code: ${response.statusCode}");
+      print("Status code: ${response.statusCode}");
       print("Body: ${response.body}");
       throw Exception("Failed to load news");
     }
   }
-    Future<List<Article>> changeLung(String query) async {
+
+  Future<List<Article>> changeLung(String query) async {
     final uri = Uri.https("gnews.io", "/api/v4/search", {
       "q": "None",
-      "apikey": "",
+      "apikey": apiKey,
       "lang": query,
       "country": "Any",
       "max": "10",
@@ -58,6 +57,7 @@ class Newsapiservice {
 
   Future<List<Article>> featchArticle() async {
     final uri = Uri.tryParse(
+      "https://gnews.io/api/v4/search?q=Global&apikey=$apiKey",
     );
     try {
       final response = await client.get(uri!);
