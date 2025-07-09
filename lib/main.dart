@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/screen/home_screen.dart';
@@ -7,7 +8,8 @@ final kColorscheme = ColorScheme.fromSeed(
   seedColor: Colors.tealAccent,
   brightness: Brightness.dark,
 );
-void main() {
+void main() async {
+  await dotenv.load();
   runApp(const ProviderScope(child: MyApp()));
 }
 
