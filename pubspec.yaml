@@ -41,6 +41,7 @@ dependencies:
   logger: ^2.0.2 
   transparent_image: ^2.0.1
   flutter_riverpod: ^2.6.1
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:
