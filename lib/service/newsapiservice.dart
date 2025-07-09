@@ -15,7 +15,7 @@ class Newsapiservice {
   Future<List<Article>> searchArticles(String query) async {
     final uri = Uri.https("gnews.io", "/api/v4/search", {
       "q": query,
-      "apikey": "cadd44b8d5598345dde7f972e3574379",
+      "apikey": "",
       "lang": "en",
       "max": "10",
     });
@@ -37,7 +37,7 @@ class Newsapiservice {
     Future<List<Article>> changeLung(String query) async {
     final uri = Uri.https("gnews.io", "/api/v4/search", {
       "q": "None",
-      "apikey": "cadd44b8d5598345dde7f972e3574379",
+      "apikey": "",
       "lang": query,
       "country": "Any",
       "max": "10",
@@ -58,7 +58,6 @@ class Newsapiservice {
 
   Future<List<Article>> featchArticle() async {
     final uri = Uri.tryParse(
-      "https://gnews.io/api/v4/search?q=Global&apikey=cadd44b8d5598345dde7f972e3574379",
     );
     try {
       final response = await client.get(uri!);
