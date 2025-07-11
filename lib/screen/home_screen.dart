@@ -15,14 +15,15 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _query = TextEditingController();
-  late final Future<void> provider;
+  Future<void>? provider;
   bool isSearching = false;
   @override
   void initState() {
     super.initState();
-    _checkConnection();
+    _initializeArticles();
     provider = ref.read(articleProvider.notifier).featchArticle();
   }
+
 
   @override
   void dispose() {
@@ -30,7 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _query.dispose();
   }
 
-  void _checkConnection() async {
+  void _initializeArticles() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       if (mounted) {
@@ -45,9 +46,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final apitArticle = ref.watch(articleProvider);
+
     Widget searchWidget = SizedBox(
       child: TextField(
         key: const ValueKey("input"),
@@ -73,7 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
       ),
     );
-    final article = ref.watch(articleProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: AnimatedSwitcher(
@@ -90,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                 )
-              : const SizedBox(width: 0,),
+              : const SizedBox(width: 0),
         ),
 
         title: isSearching
@@ -102,6 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
 
         actions: [
+        
           IconButton(
             onPressed: () {
               setState(() {
@@ -114,7 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-           _checkConnection();
+          _initializeArticles();
           provider = ref.read(articleProvider.notifier).featchArticle();
         },
         child: FutureBuilder(
@@ -126,10 +129,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             if (snapshot.hasError) {
               return Center(child: Text("${snapshot.error}"));
             }
-            return ListView.builder(
-              itemCount: article.length,
-              itemBuilder: (context, index) =>
-                  ArticleWidget(article: article[index]),
+            if (apitArticle.isNotEmpty) {
+              return ListView.builder(
+                itemCount: apitArticle.length,
+                itemBuilder: (context, index) =>
+                    ArticleWidget(article: apitArticle[index]),
+              );
+            }
+            return Center(
+              child: Text(
+                "is empty",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             );
           },
         ),

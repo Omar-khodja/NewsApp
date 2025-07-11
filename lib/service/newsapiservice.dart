@@ -6,7 +6,7 @@ import 'package:news_app/moudel/article.dart';
 import 'package:news_app/screen/home_screen.dart';
 
 class Newsapiservice {
-  Newsapiservice({required this.client}) : apiKey = dotenv.env['API_KEY']!;
+  Newsapiservice ({required this.client}) : apiKey = dotenv.env['API_KEY']!;
   final http.Client client;
   final String apiKey;
 
@@ -15,7 +15,7 @@ class Newsapiservice {
       "q": query,
       "apikey": apiKey,
       "lang": "en",
-      "max": "10",
+      "max": "20",
     });
 
     final response = await client.get(uri);
@@ -27,8 +27,6 @@ class Newsapiservice {
           .map((e) => Article.fromJson(e as Map<String, dynamic>))
           .toList();
     } else {
-      print("Status code: ${response.statusCode}");
-      print("Body: ${response.body}");
       throw Exception("Failed to load news");
     }
   }
@@ -39,7 +37,7 @@ class Newsapiservice {
       "apikey": apiKey,
       "lang": query,
       "country": "Any",
-      "max": "10",
+      "max": "20",
     });
 
     final response = await client.get(uri);
@@ -57,7 +55,7 @@ class Newsapiservice {
 
   Future<List<Article>> featchArticle() async {
     final uri = Uri.tryParse(
-      "https://gnews.io/api/v4/search?q=Global&apikey=$apiKey",
+      "https://gnews.io/api/v4/search?q=Global&lang=ar&apikey=$apiKey",
     );
     try {
       final response = await client.get(uri!);

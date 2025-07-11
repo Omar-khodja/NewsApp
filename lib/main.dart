@@ -9,7 +9,7 @@ final kColorscheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
 );
 void main() async {
-  await dotenv.load();
+  await dotenv.load(fileName: 'assets/config/.env'); 
   runApp(const ProviderScope(child: MyApp()));
 }
 
