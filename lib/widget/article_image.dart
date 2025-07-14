@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -9,7 +8,6 @@ class ArticleImage extends StatelessWidget {
   final String image;
   @override
   Widget build(BuildContext context) {
-    print(image);
     return Stack(
       children: [
         FadeInImage(

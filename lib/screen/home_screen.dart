@@ -138,7 +138,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             }
             return Center(
               child: Text(
-                "is empty",
+                "No Articels Founde",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             );

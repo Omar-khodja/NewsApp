@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/moudel/article.dart';
+import 'package:news_app/screen/home_screen.dart';
 import 'package:news_app/widget/article_image.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleWidget extends StatelessWidget {
@@ -15,7 +15,7 @@ class ArticleWidget extends StatelessWidget {
       try {
         await launchUrl(uri!, mode: LaunchMode.externalApplication);
       } catch (e) {
-        print(e);
+        logger.e(e);
       }
     }
     return;
